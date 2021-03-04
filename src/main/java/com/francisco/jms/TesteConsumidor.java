@@ -2,6 +2,7 @@ package com.francisco.jms;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
+import java.util.Scanner;
 
 public class TesteConsumidor {
 
@@ -17,11 +18,16 @@ public class TesteConsumidor {
         Destination fila = (Destination) context.lookup("financeiro");
         MessageConsumer consumer = session.createConsumer(fila);
 
-        Message message = consumer.receive();
+        consumer.setMessageListener(message -> {
+            TextMessage textMessage = (TextMessage) message;
+            try {
+                System.out.println(textMessage.getText());
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        });
 
-        System.out.println("Recebendo msg: " + message);
-
-//		new Scanner(System.in).nextLine();
+		new Scanner(System.in).nextLine();
 
         session.close();
         connection.close();
