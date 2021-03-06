@@ -2,10 +2,9 @@ package com.francisco.jms;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
-import java.util.Scanner;
 
 @SuppressWarnings("DuplicatedCode")
-public class TesteConsumidor {
+public class TesteProdutor {
 
     public static void main(String[] args) throws Exception {
 
@@ -17,20 +16,15 @@ public class TesteConsumidor {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         Destination fila = (Destination) context.lookup("financeiro");
-        MessageConsumer consumer = session.createConsumer(fila);
 
-        consumer.setMessageListener(message -> {
+        MessageProducer producer = session.createProducer(fila);
 
-            TextMessage textMessage = (TextMessage) message;
+        for (int i = 0; i < 1000; i++) {
+            Message message = session.createTextMessage("<pedido><id>" + i +"</id></pedido>");
+            producer.send(message);
+        }
 
-            try {
-                System.out.println(textMessage.getText());
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-        });
-
-        new Scanner(System.in).nextLine();
+        // new Scanner(System.in).nextLine();
 
         session.close();
         connection.close();
