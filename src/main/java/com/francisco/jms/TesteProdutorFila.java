@@ -4,7 +4,7 @@ import javax.jms.*;
 import javax.naming.InitialContext;
 
 @SuppressWarnings("DuplicatedCode")
-public class TesteProdutor {
+public class TesteProdutorFila {
 
     public static void main(String[] args) throws Exception {
 
