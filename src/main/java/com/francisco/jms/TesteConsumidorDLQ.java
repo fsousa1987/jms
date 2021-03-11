@@ -16,7 +16,7 @@ public class TesteConsumidorDLQ {
         connection.start();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        Destination fila = (Destination) context.lookup("financeiro");
+        Destination fila = (Destination) context.lookup("DLQ");
         MessageConsumer consumer = session.createConsumer(fila);
 
         consumer.setMessageListener(System.out::println);
